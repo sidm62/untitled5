@@ -3,7 +3,7 @@ import MediaRow from '../components/MediaRow';
 
 const Home = () => {
     const { mediaArray } = useMedia();
-
+//nind
     return (
         <div>
             <h1>Media Gallery</h1>
