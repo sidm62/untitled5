@@ -32,4 +32,36 @@ const useMedia = () => {
     return { mediaArray };
 };
 
-export { useMedia };
+const useAuth = () => {
+    const postLogin = async (inputs) => {
+        const fetchOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inputs),
+        };
+        return await fetchData(import.meta.env.VITE_AUTH_API + '/auth/login', fetchOptions);
+    };
+    return { postLogin };
+};
+
+const primeUser = () => {
+    const getUserByToken = async (token) => {
+        const fetchOptions = {
+            headers: { Authorization: 'Bearer ' + token },
+        };
+        return await fetchData(import.meta.env.VITE_AUTH_API + '/users/token', fetchOptions);
+    };
+
+    const postUser = async (inputs) => {
+        const fetchOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(inputs),
+        };
+        return await fetchData(import.meta.env.VITE_AUTH_API + '/users', fetchOptions);
+    };
+
+    return { getUserByToken, postUser };
+};
+
+export { useMedia, useAuth, primeUser };
