@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import LoginForm from '../components/LoginForm';
-import RegisterForm from '../components/RegisterForm';
+import RegisterForm from '../components/RegisterForm.jsx';
 
 const Login = () => {
     const [toggle, setToggle] = useState(true);

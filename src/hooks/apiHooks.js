@@ -32,7 +32,7 @@ const useMedia = () => {
     return { mediaArray };
 };
 
-const useAuth = () => {
+const useAuthentication = () => {
     const postLogin = async (inputs) => {
         const fetchOptions = {
             method: 'POST',
@@ -44,7 +44,7 @@ const useAuth = () => {
     return { postLogin };
 };
 
-const primeUser = () => {
+const useUser = () => {
     const getUserByToken = async (token) => {
         const fetchOptions = {
             headers: { Authorization: 'Bearer ' + token },
@@ -64,4 +64,4 @@ const primeUser = () => {
     return { getUserByToken, postUser };
 };
 
-export { useMedia, useAuth, primeUser };
+export { useMedia, useAuthentication, useUser };
