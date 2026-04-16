@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import useForm from '../hooks/formHooks';
 import { useFile, useMedia } from '../hooks/apiHooks';
-import { useNavigate } from 'react-router';
 
 const Upload = () => {
     const [file, setFile] = useState(null);
@@ -12,16 +12,23 @@ const Upload = () => {
     const doUpload = async () => {
         try {
             const token = localStorage.getItem('token');
-            // 1. Lataa tiedosto tiedostopalvelimelle
+            if (!token || !file) {
+                alert('Kirjaudu sisään ja valitse tiedosto');
+                return;
+            }
+
+
             const fileData = await postFile(file, token);
-            // 2. Tallenna median tiedot Media API:iin
+
+
             // eslint-disable-next-line react-hooks/immutability
             await postMedia(fileData.data, inputs, token);
 
+            // 3. Palataan kotisivulle
             navigate('/');
         } catch (e) {
-            console.log(e.message);
-            alert('Upload failed: ' + e.message);
+            console.error(e.message);
+            alert('Lataus epäonnistui');
         }
     };
 
@@ -53,7 +60,6 @@ const Upload = () => {
                     <label htmlFor="description">Description</label>
                     <textarea
                         name="description"
-                        rows={5}
                         id="description"
                         onChange={handleInputChange}
                     ></textarea>
@@ -68,18 +74,18 @@ const Upload = () => {
                         onChange={handleFileChange}
                     />
                 </div>
-                <img
-                    src={
-                        file
-                            ? URL.createObjectURL(file)
-                            : 'https://placehold.co/200?text=Choose+image'
-                    }
-                    alt="preview"
-                    width="200"
-                />
+
+                {file && (
+                    <img
+                        src={URL.createObjectURL(file)}
+                        alt="preview"
+                        width="200"
+                    />
+                )}
+
                 <button
                     type="submit"
-                    disabled={file && inputs.title.length > 3 ? false : true}
+                    disabled={!file || inputs.title.length < 3}
                 >
                     Upload
                 </button>
