@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { primeUser } from '../hooks/apiHooks';
+import { useUser } from '../hooks/apiHooks';
 
 const Profile = () => {
     const [user, setUser] = useState(null);
-    const { getUserByToken } = primeUser();
+    const { getUserByToken } = useUser();
 
     useEffect(() => {
         const getProfile = async () => {

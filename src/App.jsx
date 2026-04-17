@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router';
-import { UserProvider } from './contexts/UserContext';
+import { UserProvider } from './contexts/UserContexts.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layouts from './components/Layouts';
 import Home from './views/Home';
@@ -11,7 +11,7 @@ import Logout from './views/Logout';
 
 const App = () => {
     return (
-        <Router>
+        <Router basename={import.meta.env.BASE_URL}>
             <UserProvider>
                 <Routes>
                     <Route element={<Layouts />}>

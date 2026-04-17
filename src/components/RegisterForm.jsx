@@ -1,11 +1,12 @@
 import useForm from '../hooks/formHooks';
-import { primeUser } from '../hooks/apiHooks';
+import { useUser } from '../hooks/apiHooks';
 
 const RegisterForm = ({ setToggle }) => {
-    const { postUser } = primeUser();
+    const { postUser } = useUser();
 
     const doRegister = async () => {
         try {
+            // eslint-disable-next-line react-hooks/immutability
             await postUser(inputs);
             setToggle(true);
         } catch (error) {
