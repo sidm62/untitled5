@@ -54,6 +54,6 @@ const Profile = () => {
             </div>
         </main>
     );
-};
+}; //gu
 
 export default Profile;
