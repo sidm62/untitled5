@@ -11,25 +11,49 @@ const Profile = () => {
             if (token) {
                 try {
                     const userData = await getUserByToken(token);
-                    setUser(userData);
+                    setUser(userData.user); // Huom: API saattaa palauttaa { user: {...} }, tarkista tämä
                 } catch (error) {
-                    console.error(error);
+                    console.error('Profile fetch failed:', error.message);
                 }
             }
         };
         getProfile();
-    }, []);
+    }, [getUserByToken]);
 
     return (
-        <div>
-            <h1>Profile</h1>
-            {user && (
-                <>
-                    <p>Username: {user.username}</p>
-                    <p>Email: {user.email}</p>
-                </>
-            )}
-        </div>
+        <main>
+            <div className="profile-container">
+                <h2>User Profile</h2>
+
+                {user ? (
+                    <>
+                        <div className="profile-info-row">
+                            <span className="profile-info-label">Username</span>
+                            <span className="profile-info-value">{user.username}</span>
+                        </div>
+
+                        <div className="profile-info-row">
+                            <span className="profile-info-label">Email</span>
+                            <span className="profile-info-value">{user.email}</span>
+                        </div>
+
+
+                        <button
+                            className="btn-delete mt-8 w-full"
+                            onClick={() => {
+                                localStorage.removeItem('token');
+                                window.location.reload();
+                            }}
+                        >
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <p className="text-center text-slate-400">Loading profile data...</p>
+                )}
+            </div>
+        </main>
     );
 };
+
 export default Profile;

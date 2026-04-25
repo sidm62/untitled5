@@ -47,7 +47,29 @@ const useMedia = () => {
         return await fetchData(import.meta.env.VITE_MEDIA_API + '/media', fetchOptions);
     };
 
-    return { mediaArray, postMedia };
+
+    const deleteMedia = async (file_id, token) => {
+        const options = {
+            method: 'DELETE',
+            headers: { Authorization: 'Bearer ' + token },
+        };
+        return await fetchData(import.meta.env.VITE_MEDIA_API + '/media/' + file_id, options);
+    };
+
+
+    const putMedia = async (file_id, inputs, token) => {
+        const options = {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(inputs),
+        };
+        return await fetchData(import.meta.env.VITE_MEDIA_API + '/media/' + file_id, options);
+    };
+
+    return { mediaArray, postMedia, deleteMedia, putMedia };
 };
 
 const useAuthentication = () => {
@@ -89,9 +111,7 @@ const useFile = () => {
 
         const fetchOptions = {
             method: 'POST',
-            headers: {
-                Authorization: 'Bearer ' + token,
-            },
+            headers: { Authorization: 'Bearer ' + token },
             body: formData,
         };
         return await fetchData(import.meta.env.VITE_UPLOAD_SERVER + '/upload', fetchOptions);
@@ -99,4 +119,40 @@ const useFile = () => {
     return { postFile };
 };
 
-export { useMedia, useAuthentication, useUser, useFile };
+
+const useLike = () => {
+    const postLike = async (file_id, token) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ media_id: Number(file_id) }),
+        };
+        return await fetchData(import.meta.env.VITE_MEDIA_API + '/likes', options);
+    };
+
+    const deleteLike = async (like_id, token) => {
+        const options = {
+            method: 'DELETE',
+            headers: { Authorization: 'Bearer ' + token },
+        };
+        return await fetchData(import.meta.env.VITE_MEDIA_API + '/likes/' + like_id, options);
+    };
+
+    const getLikeCountByMediaId = async (file_id) => {
+        return await fetchData(import.meta.env.VITE_MEDIA_API + '/likes/count/' + file_id);
+    };
+
+    const getLikeByUser = async (file_id, token) => {
+        const options = {
+            headers: { Authorization: 'Bearer ' + token },
+        };
+        return await fetchData(import.meta.env.VITE_MEDIA_API + '/likes/bymedia/user/' + file_id, options);
+    };
+
+    return { postLike, deleteLike, getLikeCountByMediaId, getLikeByUser };
+};
+
+export { useMedia, useAuthentication, useUser, useFile, useLike };

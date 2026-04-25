@@ -1,20 +1,45 @@
 import { useLocation, useNavigate } from 'react-router';
+import Likes from '../components/Likes';
 
 const Single = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
     const item = state?.item;
 
-    if (!item) return <div>No item found</div>;
+    if (!item) {
+        return (
+            <div>
+                <p>No item found</p>
+                <button onClick={() => navigate(-1)}>Go back</button>
+            </div>
+        );
+    }
 
     return (
-        <div>
+        <article>
             <button onClick={() => navigate(-1)}>Go back</button>
-            <h2>{item.title}</h2>
-            <p>Owner: {item.username}</p>
-            <img src={item.url} alt={item.title} />
-            <p>{item.description}</p>
-        </div>
+
+            <header>
+                <h2>{item.title}</h2>
+                <p>Owner: {item.username}</p>
+            </header>
+
+            <div>
+                <img
+                    src={item.filename || item.url}
+                    alt={item.title}
+                />
+            </div>
+
+            <section>
+                <p>{item.description}</p>
+                <Likes item={item} />
+            </section>
+
+            <footer>
+                <span>Type: {item.media_type}</span>
+            </footer>
+        </article>
     );
 };
 
